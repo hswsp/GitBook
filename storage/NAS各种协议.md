@@ -20,7 +20,7 @@ author:
 
 NAS 存储服务器有许多专业厂商，比如群晖（ Synology）、铁威马（TerraMaster）等，动手能力强的用户可以 DIY 硬件开源系统自己搭建。不过这些不是今天讨论的话题，今天我们来讨论一下 NAS 常见的共享访问协议：NFS、FTP、SMB、WebDav、DLNA有什么区别，哪些速度快，哪些兼容性好，如何选择等。
 
-![image.png](assets/image-20231116205443-mqhnylk.png)
+![image-20231116205443-mqhnylk](https://github.com/hswsp/IMAGE_HOST/raw/main/assets/20240228151938.png)
 
 # NFS
 
