@@ -10,4 +10,4 @@
 ## Relational Data Base
 
 * [聊聊MySql事务,MVCC](relational-data-base/mvcc.md)
-* [PROJECT 0](relational-data-base/C++ PRIMER.md)
+* [PROJECT 0](relational-data-base/ CMU-project0.md)
