@@ -2,7 +2,7 @@
 
  Do not post your project on a public Github repository.
 
-# Overview
+## Overview
 
 All the programming projects this semester will be written on the [BusTub](https://github.com/cmu-db/bustub) database management system. This system is written in C++. To make sure that you have the necessary C++ background, you must complete a simple programming assignment to assess your knowledge of basic C++ features. You will not be given a grade for this project, but you **must complete the project with a perfect score** before being allowed to proceed in the course. Any student unable to complete this assignment before the deadline will be asked to drop the course.
 
@@ -28,7 +28,7 @@ This is a single-person project that will be completed individually (i.e. no gro
 - **Release Date:** Aug 28, 2023
 - **Due Date:** Sep 10, 2023 @ 11:59pm
 
-# Project Specification
+## Project Specification
 
 In this project, you will implement a key-value store backed by a copy-on-write [trie](https://en.wikipedia.org/wiki/Trie). Tries are efficient ordered-tree data structures for retrieving a value for a given key. To simplify the explanation, we will assume that the keys are variable-length strings, but in practice they can be any arbitrary type.
 
@@ -40,7 +40,7 @@ The key-value store you will implement can store string keys mapped to values of
 
 The two keys share the same parent node. The value 1 corresponding to key "ab" is stored in the left child, and the value "val" corresponding to key "ac" is stored in the right node.
 
-# Task #1 - Copy-On-Write Trie
+## Task #1 - Copy-On-Write Trie
 
 In this task, you will need to modify `trie.h` and `trie.cpp` to implement a copy-on-write trie. In a copy-on-write trie, operations do not directly modify the nodes of the original trie. Instead, new nodes are created for modified data, and a new root is returned for the newly-modified trie. Copy-on-write enables us to access the trie after each operation at any time with minimum overhead. Consider inserting `("ad", 2)` in the above example. We create a new `Node2` by reusing two of the child nodes from the original tree, and creating a new value node 2. (See figure below)
 
@@ -66,7 +66,7 @@ To create a completely new node (i.e., a new leaf node without children), you ca
 
 For the full specifications of these operations, please refer to the comments in the starter code. **Your implementation should store data as in the above examples.** Do not store the C-string terminator `\0` in your trie. Please also **avoid removing any `const` from the class definitions or use `mutable` / `const_cast` to bypass the const checks**.
 
-# Task #2 - Concurrent Key-Value Store
+## Task #2 - Concurrent Key-Value Store
 
 After you have a copy-on-write trie which can be used in a single-thread environment, implement a concurrent key-value store for a multithreaded environment. In this task, you will need to modify `trie_store.h` and `trie_store.cpp`. This key-value store also supports 3 operations:
 
@@ -82,13 +82,13 @@ Also, if we get a reference to a value from the trie, we should be able to acces
 
 To achieve this, we have provided you with the pseudo code for `TrieStore::Get` in `trie_store.cpp`. Please read it carefully and think of how to implement `TrieStore::Put` and `TrieStore::Remove`.
 
-# Task #3 - Debugging
+## Task #3 - Debugging
 
 In this task, you will learn the basic techniques of debugging. You can choose any way you prefer for debugging, including but not limited to: using `cout` and `printf`, using CLion / VSCode debugger, using gdb, etc.
 
 Please refer to `trie_debug_test.cpp` for instructions. You will need to set a breakpoint after the trie structure is generated and answer a few questions. You will need to fill in the answer in `trie_answer.h`.
 
-# Task #4 - SQL String Functions
+## Task #4 - SQL String Functions
 
 Now it is time to dive into BusTub itself! You will need to implement `upper` and `lower` SQL functions. This can be done in 2 steps: (1) implement the function logic in `string_expression.h`. (2) register the function in BusTub, so that the SQL framework can call your function when the user executes a SQL, in `plan_func_call.cpp`.
 
@@ -114,9 +114,9 @@ make -j`nproc` sqllogictest
 
 **Note:** If you see `BufferPoolManager is not implemented yet.` when running sqllogictest, this is normal and you can safely ignore this warning in project 0.
 
-# Instructions
+## Instructions
 
-## Creating Your Own Project Repository
+### Creating Your Own Project Repository
 
 If the below `git` concepts (e.g., repository, merge, pull, fork) do not make sense to you, please spend some time [learning git](https://guides.github.com/introduction/git-handbook/) first.
 
@@ -135,7 +135,7 @@ $ git fetch public
 $ git merge public/master
 ```
 
-## Setting Up Your Development Environment
+### Setting Up Your Development Environment
 
 First install the packages that BusTub requires:
 
@@ -159,7 +159,7 @@ $ make -j`nproc`
 
 We recommend always configuring CMake in debug mode. This will enable you to output debug messages and check for memory leaks (more on this in below sections).
 
-## Testing
+### Testing
 
 You can test the individual components of this assignment using our testing framework. We use [GTest](https://github.com/google/googletest) for unit test cases. You can compile and run each test individually from the command-line:
 
@@ -177,7 +177,7 @@ In this project, there are no hidden tests. In the future, the provided tests in
 
  Make sure that you remove the `DISABLED_` prefix from the test names otherwise they will **not** run!
 
-## Formatting
+### Formatting
 
 Your code must follow the [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html). We use [Clang](https://clang.llvm.org/) to automatically check the quality of your source code. Your project grade will be **zero** if your submission fails any of these checks.
 
@@ -188,7 +188,7 @@ $ make format
 $ make check-clang-tidy-p0
 ```
 
-## Memory Leaks
+### Memory Leaks
 
 For this project, we use [LLVM Address Sanitizer (ASAN) and Leak Sanitizer (LSAN)](https://clang.llvm.org/docs/AddressSanitizer.html) to check for memory errors. To enable ASAN and LSAN, configure CMake in debug mode and run tests as you normally would. If there is memory error, you will see a memory error report. Note that macOS **only supports address sanitizer without leak sanitizer**.
 
@@ -198,7 +198,7 @@ In some cases, address sanitizer might affect the usability of the debugger. In 
 $ cmake -DCMAKE_BUILD_TYPE=Debug -DBUSTUB_SANITIZER= ..
 ```
 
-## Development Hints
+### Development Hints
 
 You can use `BUSTUB_ASSERT` for assertions in debug mode. Note that the statements within `BUSTUB_ASSERT` will NOT be executed in release mode. If you have something to assert in all cases, use `BUSTUB_ENSURE` instead.
 
@@ -213,7 +213,7 @@ $ cmake -DCMAKE_BUILD_TYPE=Release ..
 
  TAs will **not** look into your code or help you debug in this project.
 
-# Grading Rubric
+## Grading Rubric
 
 In order to pass this project, you must ensure your code follows the following guidelines:
 
@@ -223,11 +223,11 @@ In order to pass this project, you must ensure your code follows the following g
 
 Note that we will use additional test cases to grade your submission that are more complex than the sample test cases that we provide you in future projects.
 
-# Late Policy
+## Late Policy
 
 There are no late days for this project.
 
-# Submission
+## Submission
 
 You will submit your implementation to Gradescope:
 
@@ -243,7 +243,7 @@ Although you are allowed submit your answers as many times as you like, you shou
 
  CMU students should use the Gradescope course code announced on Piazza.
 
-# Collaboration Policy
+## Collaboration Policy
 
 - Every student must work individually on this assignment.
 - Students are allowed to discuss high-level details about the project with others.
