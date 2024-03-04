@@ -4,7 +4,7 @@ description: CMU-DB
 
 # PROJECT #0 - C++ PRIMER
 
-Do not post your project on a public Github repository.
+> Do not post your project on a public Github repository.
 
 ### Overview
 
@@ -40,7 +40,7 @@ Each node in a trie can have multiple child nodes representing different possibl
 
 The key-value store you will implement can store string keys mapped to values of any type. The value of a key is stored in the node representing the last character of that key (aka terminal node). For example, consider inserting kv pairs `("ab", 1)` and `("ac", "val")` into the trie.
 
-![Trie](https://github.com/hswsp/IMAGE\_HOST/raw/main/assets/20240304155857.svg)
+![Trie](https://github.com/hswsp/IMAGE_HOST/raw/main/assets/20240304155857.svg)
 
 The two keys share the same parent node. The value 1 corresponding to key "ab" is stored in the left child, and the value "val" corresponding to key "ac" is stored in the right node.
 
@@ -48,15 +48,15 @@ The two keys share the same parent node. The value 1 corresponding to key "ab" i
 
 In this task, you will need to modify `trie.h` and `trie.cpp` to implement a copy-on-write trie. In a copy-on-write trie, operations do not directly modify the nodes of the original trie. Instead, new nodes are created for modified data, and a new root is returned for the newly-modified trie. Copy-on-write enables us to access the trie after each operation at any time with minimum overhead. Consider inserting `("ad", 2)` in the above example. We create a new `Node2` by reusing two of the child nodes from the original tree, and creating a new value node 2. (See figure below)
 
-![Trie](https://github.com/hswsp/IMAGE\_HOST/raw/main/assets/20240304155912.svg)
+![Trie](https://github.com/hswsp/IMAGE_HOST/raw/main/assets/20240304155912.svg)
 
 If we then insert `("b", 3)`, we will create a new root, a new node and reuse the previous nodes. In this way, we can get the content of the trie before and after each insertion operation. As long as we have the root object (`Trie` class), we can access the data inside the trie at that time. (See figure below)
 
-![Trie](https://github.com/hswsp/IMAGE\_HOST/raw/main/assets/20240304155922.svg)
+![Trie](https://github.com/hswsp/IMAGE_HOST/raw/main/assets/20240304155922.svg)
 
 One more example: if we then insert `("a", "abc")` and remove `("ab", 1)`, we can get the below trie. Note that parent nodes can have values, and **you will need to purge all unnecessary nodes after removal**. An empty trie is represented by `nullptr`.
 
-![Trie](https://github.com/hswsp/IMAGE\_HOST/raw/main/assets/20240304155959.svg)
+![Trie](https://github.com/hswsp/IMAGE_HOST/raw/main/assets/20240304155959.svg)
 
 Your trie must support three operations:
 
@@ -179,7 +179,7 @@ $ ./test/trie_store_noncopy_test
 
 In this project, there are no hidden tests. In the future, the provided tests in the starter code are only a subset of the all the tests that we will use to evaluate and grade your project. You should write additional test cases on your own to check the complete functionality of your implementation.
 
-Make sure that you remove the `DISABLED_` prefix from the test names otherwise they will **not** run!
+> Make sure that you remove the `DISABLED_` prefix from the test names otherwise they will **not** run!
 
 #### Formatting
 
@@ -213,9 +213,9 @@ $ mkdir build_rel && cd build_rel
 $ cmake -DCMAKE_BUILD_TYPE=Release ..
 ```
 
-Post all of your questions about this project on Piazza. Do **not** email the TAs directly with questions.
+> Post all of your questions about this project on Piazza. Do **not** email the TAs directly with questions.
 
-TAs will **not** look into your code or help you debug in this project.
+> TAs will **not** look into your code or help you debug in this project.
 
 ### Grading Rubric
 
@@ -245,7 +245,7 @@ $ make submit-p0
 
 Although you are allowed submit your answers as many times as you like, you should **not** treat Gradescope as your only debugging tool. Most students submit their projects near the deadline, and thus Gradescope will take longer to process the requests. You may not get feedback in a timely manner to help you debug problems. Furthermore, the output from Gradescope is unlikely to be as informative as the output from a debugger (like `gdb`), provided you invest some time in learning to use it.
 
-CMU students should use the Gradescope course code announced on Piazza.
+> CMU students should use the Gradescope course code announced on Piazza.
 
 ### Collaboration Policy
 
@@ -255,4 +255,4 @@ CMU students should use the Gradescope course code announced on Piazza.
 * Students are **not** allowed to copy solutions from another person.
 * In this project, you are allowed to search on Google or ask ChatGPT high-level questions like "what is trie", "how to use `std::move`".
 
-**WARNING:** All of the code for this project must be your own. You may not copy source code from other students or other sources that you find on the web. Plagiarism **will not** be tolerated. See CMU's [Policy on Academic Integrity](https://www.cmu.edu/policies/student-and-student-life/academic-integrity.html) for additional information.
+> **WARNING:** All of the code for this project must be your own. You may not copy source code from other students or other sources that you find on the web. Plagiarism **will not** be tolerated. See CMU's [Policy on Academic Integrity](https://www.cmu.edu/policies/student-and-student-life/academic-integrity.html) for additional information.
