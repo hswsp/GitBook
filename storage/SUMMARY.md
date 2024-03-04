@@ -13,4 +13,4 @@
 
 ## CMU-DB
 
-- [PROJECT 0](CMU-DB/PROJECT #0 - C++ PRIMER.md)
+- [PROJECT 0](CMU-DB/C++ PRIMER.md)
