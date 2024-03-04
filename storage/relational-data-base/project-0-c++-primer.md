@@ -10,7 +10,7 @@ Do not post your project on a public Github repository.
 
 All the programming projects this semester will be written on the [BusTub](https://github.com/cmu-db/bustub) database management system. This system is written in C++. To make sure that you have the necessary C++ background, you must complete a simple programming assignment to assess your knowledge of basic C++ features. You will not be given a grade for this project, but you **must complete the project with a perfect score** before being allowed to proceed in the course. Any student unable to complete this assignment before the deadline will be asked to drop the course.
 
-All of the code in this programming assignment must be written in C++. The projects will be specifically written for C++17, but we have found that it is generally sufficient to know C++11. If you have not used C++ before, here are some resources to help:
+All of the code in this programming assignment must be written in C++. <mark style="color:orange;">The projects will be specifically written for C++17</mark>, but we have found that it is generally sufficient to know C++11. If you have not used C++ before, here are some resources to help:
 
 * [15-445 Bootcamp](https://github.com/cmu-db/15445-bootcamp), which contains several small examples to get you familiar with C++11 features.
 * A [short tutorial](http://www.thegeekstuff.com/2016/02/c-plus-plus-11/) on the language.
