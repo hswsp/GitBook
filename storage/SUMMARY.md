@@ -13,3 +13,5 @@
 * [CMU-DB](relational-data-base/cmu-db/README.md)
   * [PROJECT #0 - C++ PRIMER](relational-data-base/cmu-db/project-c++-primer.md)
   * [PROJECT #1 - BUFFER POOL](relational-data-base/cmu-db/project-buffer-pool.md)
+  * [PROJECT #2 - EXTENDIBLE HASH INDEX](relational-data-base/cmu-db/PROJECT-EXTENDIBLE-HASH-INDEX.md)
+
