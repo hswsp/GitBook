@@ -11,6 +11,6 @@
 
 * [聊聊MySql事务,MVCC](relational-data-base/mvcc.md)
 
-## CMU-DB
+## CMU DB
 
-- [PROJECT 0](CMU-DB/C++ PRIMER.md)
+* [PROJECT 0](CMU-DB/C++ PRIMER.md)
