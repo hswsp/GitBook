@@ -14,4 +14,6 @@
   * [PROJECT #0 - C++ PRIMER](relational-data-base/cmu-db/project-c++-primer.md)
   * [PROJECT #1 - BUFFER POOL](relational-data-base/cmu-db/project-buffer-pool.md)
   * [PROJECT #2 - EXTENDIBLE HASH INDEX](relational-data-base/cmu-db/PROJECT-EXTENDIBLE-HASH-INDEX.md)
+  * [PROJECT #3 - QUERY EXECUTION](relational-data-base/cmu-db/PROJECT-QUERY-EXECUTION.md)
+  * [PROJECT #4 - CONCURRENCY CONTROL](relational-data-base/cmu-db/PROJECT-CONCURRENCY-CONTROL.md)
 
