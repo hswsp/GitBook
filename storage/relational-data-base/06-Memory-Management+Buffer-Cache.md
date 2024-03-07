@@ -6,15 +6,13 @@
 
 ![3.jpg](assets/1678153347676-3b83b2e0-688a-490f-a4e6-98269058df81.jpeg)
 
-# Introduction
+## Introduction
 
 The DBMS is responsible for managing its memory and moving data back-and-forth from the disk. Since, for the most part, data cannot be directly operated on in the disk, any database must be able to efficiently move data represented as files on its disk into memory so that it can be used. A diagram of this interaction is shown in Figure 1. A obstacle that DBMS’s face is the problem of minimizing the slowdown of moving data around. Ideally, it should “appear” as if the data is all in the memory already. The **execution engine** shouldn’t have to worry about how data is fetched into memory.
 
 ![Figure 1: Disk-oriented DBMS.](assets/image.png)
 
-Another way to think of this problem is in terms of spatial and temporal control.
-*Spatial Control* refers to where pages are physically written on disk. The goal of spatial control is to keep pages that are used together often as physically close together as possible on disk.
-*Temporal Control* refers to when to read pages into memory and when to write them to disk. Temporal control aims to minimize the number of stalls from having to read data from disk.
+Another way to think of this problem is in terms of spatial and temporal control. _Spatial Control_ refers to where pages are physically written on disk. The goal of spatial control is to keep pages that are used together often as physically close together as possible on disk. _Temporal Control_ refers to when to read pages into memory and when to write them to disk. Temporal control aims to minimize the number of stalls from having to read data from disk.
 
 ![4.jpg](assets/20240307174307.jpeg)
 
@@ -24,16 +22,13 @@ Another way to think of this problem is in terms of spatial and temporal control
 
 ![7.jpg](assets/1678153349416-73812439-0f41-444f-90c3-14eb03f78c36.jpeg)
 
-# Locks vs. Latches
+## Locks vs. Latches
 
-We need to make a distinction between locks and latches when discussing how the DBMS protects its internal elements.
-**Locks: **A lock is a higher-level, logical primitive that protects the contents of a database (e.g., tuples, tables, databases) from other transactions. Transactions will hold a lock for its entire duration. Database systems can expose to the user which locks are being held as queries are run. Locks need to be able to rollback changes.
-**Latches:**  A latch is a low-level protection primitive that the DBMS uses for the critical sections in its internal data structures (e.g., hash tables, regions of memory). Latches are held for only the duration of the operation being made. Latches do not need to be able to rollback changes.
+We need to make a distinction between locks and latches when discussing how the DBMS protects its internal elements. \*\*Locks: \*\*A lock is a higher-level, logical primitive that protects the contents of a database (e.g., tuples, tables, databases) from other transactions. Transactions will hold a lock for its entire duration. Database systems can expose to the user which locks are being held as queries are run. Locks need to be able to rollback changes. **Latches:** A latch is a low-level protection primitive that the DBMS uses for the critical sections in its internal data structures (e.g., hash tables, regions of memory). Latches are held for only the duration of the operation being made. Latches do not need to be able to rollback changes.
 
-# Buffer Pool
+## Buffer Pool
 
-The *buffer pool* is an in-memory cache of pages read from disk. It is essentially a large memory region allocated inside of the database to store pages that are fetched from disk.
-The buffer pool’s region of memory organized as an array of **fixed size pages.**  Each array entry is called a **frame**. When the DBMS requests a page, an exact copy is placed into one of the frames of the buffer pool. Then, the database system can search the buffer pool first when a page is requested. If the page is not found, then the system fetches a copy of the page from the disk. Dirty pages are buffered and not written back immediately（write-back cache）. See Figure 2 for a diagram of the buffer pool’s memory organization.
+The _buffer pool_ is an in-memory cache of pages read from disk. It is essentially a large memory region allocated inside of the database to store pages that are fetched from disk. The buffer pool’s region of memory organized as an array of **fixed size pages.** Each array entry is called a **frame**. When the DBMS requests a page, an exact copy is placed into one of the frames of the buffer pool. Then, the database system can search the buffer pool first when a page is requested. If the page is not found, then the system fetches a copy of the page from the disk. Dirty pages are buffered and not written back immediately（write-back cache）. See Figure 2 for a diagram of the buffer pool’s memory organization.
 
 ![Figure 2: Buffer pool organization and meta-data](assets/image1.png)
 
@@ -41,17 +36,13 @@ The buffer pool’s region of memory organized as an array of **fixed size pages
 
 ![9.jpg](assets/1678153350320-101aa9ff-3973-4339-9fb6-d66d3f99ee83.jpeg)
 
-## Buffer Pool Meta-data
+### Buffer Pool Meta-data
 
-The buffer pool must maintain certain meta-data in order to be used efficiently and correctly.
-Firstly, the *page table* is an in-memory hash table that keeps track of pages that are currently in memory. It maps page ids to frame locations in the buffer pool. Since the order of pages in the buffer pool does not necessarily reflect the order on the disk, this extra indirection layer allows for the identification of page locations in the pool.
-**Note: **The **page table** is not to be confused with the **page directory**, which is the mapping from page ids to page locations in database files. All changes to the page directory must be recorded on disk to allow the DBMS to find on restart.
-The page table also maintains additional meta-data per page, a dirty-flag and a pin/reference counter.
+The buffer pool must maintain certain meta-data in order to be used efficiently and correctly. Firstly, the _page table_ is an in-memory hash table that keeps track of pages that are currently in memory. It maps page ids to frame locations in the buffer pool. Since the order of pages in the buffer pool does not necessarily reflect the order on the disk, this extra indirection layer allows for the identification of page locations in the pool. \*\*Note: \*\*The **page table** is not to be confused with the **page directory**, which is the mapping from page ids to page locations in database files. All changes to the page directory must be recorded on disk to allow the DBMS to find on restart. The page table also maintains additional meta-data per page, a dirty-flag and a pin/reference counter.
 
 ![10.jpg](assets/1678153350463-317bf974-8dbf-4f19-9c65-3f7e5e3ffe10.jpeg)
 
-The *dirty-flag* is set by a thread whenever it modifies a page. This indicates to storage manager that the page must be written back to disk.
-The *pin/reference* Counter tracks the number of threads that are currently accessing that page (either reading or modifying it). A thread has to increment the counter before they access the page. If a page’s count is greater than zero, then the storage manager is **not** allowed to evict that page from memory.
+The _dirty-flag_ is set by a thread whenever it modifies a page. This indicates to storage manager that the page must be written back to disk. The _pin/reference_ Counter tracks the number of threads that are currently accessing that page (either reading or modifying it). A thread has to increment the counter before they access the page. If a page’s count is greater than zero, then the storage manager is **not** allowed to evict that page from memory.
 
 ![11.jpg](assets/1678153351043-762701db-a635-4bf1-9a0d-d3037dcfa0e0.jpeg)
 
@@ -61,27 +52,21 @@ The *pin/reference* Counter tracks the number of threads that are currently acce
 
 ![14.jpg](assets/1678153352763-ac24cc40-bb62-4b3e-8144-2ba3915217e5.jpeg)
 
-## Memory Allocation Policies
+### Memory Allocation Policies
 
-Memory in the database is allocated for the buffer pool according to two policies.
-*Global policies* deal with decisions that the DBMS should make to benefit the entire workload that is being executed. It considers all active transactions to find an optimal decision for allocating memory.
-An alternative is *local policies*, which makes decisions that will make a single query or transaction run faster, even if it isn’t good for the entire workload. Local policies allocate frames to a specific transactions without considering the behavior of concurrent transactions.
-Most systems use a combination of both global and local views.
+Memory in the database is allocated for the buffer pool according to two policies. _Global policies_ deal with decisions that the DBMS should make to benefit the entire workload that is being executed. It considers all active transactions to find an optimal decision for allocating memory. An alternative is _local policies_, which makes decisions that will make a single query or transaction run faster, even if it isn’t good for the entire workload. Local policies allocate frames to a specific transactions without considering the behavior of concurrent transactions. Most systems use a combination of both global and local views.
 
 ![15.jpg](assets/1678153352564-53946bc9-b383-451e-9fd6-4673dc9cb7ff.jpeg)
 
-# Buffer Pool Optimizations
+## Buffer Pool Optimizations
 
 There are a number of ways to optimize a buffer pool to tailor it to the application’s workload.
 
 ![16.jpg](assets/1678153353126-1d179913-7b01-449b-8c47-3ea6b1db78f0.jpeg)
 
-## Multiple Buffer Pools
+### Multiple Buffer Pools
 
-The DBMS can maintain multiple buffer pools for different purposes (i.e per-database buffer pool, per-page type buffer pool). Then, each buffer pool can adopt local policies tailored for the data stored inside of it. This method can help reduce latch contention and improves locality.
-Two approaches to mapping desired pages to a buffer pool are object IDs and hashing.
-_Object IDs _involve extending the record IDs to have an object identifier. Then through the object identifier, a mapping from objects to specific buffer pools can be maintained.
-Another approach is *hashing* where the DBMS hashes the page id to select which buffer pool to access.
+The DBMS can maintain multiple buffer pools for different purposes (i.e per-database buffer pool, per-page type buffer pool). Then, each buffer pool can adopt local policies tailored for the data stored inside of it. This method can help reduce latch contention and improves locality. Two approaches to mapping desired pages to a buffer pool are object IDs and hashing. \_Object IDs \_involve extending the record IDs to have an object identifier. Then through the object identifier, a mapping from objects to specific buffer pools can be maintained. Another approach is _hashing_ where the DBMS hashes the page id to select which buffer pool to access.
 
 ![17.jpg](assets/1678153353595-ec002489-d228-4595-89f8-21c00752c522.jpeg)
 
@@ -93,7 +78,7 @@ bufferpool -> tablespace -> table
 
 ![20.jpg](assets/1678153355297-0567d3a4-9794-42fb-96bf-de6365c3d931.jpeg)
 
-## Pre-fetching
+### Pre-fetching
 
 The DBMS can also optimize by pre-fetching pages based on the query plan. Then, while the first set of pages is being processed, the second can be pre-fetched into the buffer pool. This method is commonly used by DBMS’s when accessing many pages sequentially.
 
@@ -115,7 +100,7 @@ The DBMS can also optimize by pre-fetching pages based on the query plan. Then, 
 
 ![29.jpg](assets/1678153359481-6c34b9b6-f8d0-4723-9dbb-16d38526aae1.jpeg)
 
-## Scan Sharing (Synchronized Scans)
+### Scan Sharing (Synchronized Scans)
 
 Query cursors can reuse data retrieved from storage or operator computations. This allows multiple queries to attach to a single cursor that scans a table. Ifb a query starts a scan and if there one already doing this, then the DBMS will attach the second query’s cursor to the existing cursor. The DBMS keeps track of where the second query joined with the first so that it can finish the scan when it reaches the end of the data structure.
 
@@ -151,17 +136,15 @@ Problems that Synchronized Scans might incur:
 
 ![44.jpg](assets/1678153365529-f6531f67-a7f0-4a59-83ef-3601d500c48c.jpeg)
 
-## Buffer Pool Bypass
+### Buffer Pool Bypass
 
 The sequential scan operator will not store fetched pages in the buffer pool to avoid overhead. Instead, memory is local to the running query. This works well if operator needs to read a large sequence of pages that are contiguous on disk. Buffer Pool Bypass can also be used for temporary data (sorting, joins).
 
 ![45.jpg](assets/1678153365937-37718a9f-8ebf-4e5d-bca9-b11767245341.jpeg)
 
-# OS Page Cache
+## OS Page Cache
 
-Most disk operations go through the OS API. Unless explicitly told otherwise, the OS maintains its own filesystem cache.
-Most DBMS use **direct I/O to bypass the OS’s cache** in order to avoid redundant copies of pages and having to manage different eviction policies.
-**Postgres** is an example of a database system that uses the OS’s Page Cache.
+Most disk operations go through the OS API. Unless explicitly told otherwise, the OS maintains its own filesystem cache. Most DBMS use **direct I/O to bypass the OS’s cache** in order to avoid redundant copies of pages and having to manage different eviction policies. **Postgres** is an example of a database system that uses the OS’s Page Cache.
 
 ![46.jpg](assets/1678153366172-21fe8fa4-79d2-4867-b753-54eb41b1b48e.jpeg)
 
@@ -169,24 +152,21 @@ Most DBMS use **direct I/O to bypass the OS’s cache** in order to avoid redund
 
 ![48.jpg](assets/1678153367333-85e31de8-2df6-4dcc-936e-b973d4badd0b.jpeg)
 
-# Buffer Replacement Policies
+## Buffer Replacement Policies
 
-When the DBMS needs to free up a frame to make room for a new page, it must decide which page to evict from the buffer pool.
-A replacement policy is an algorithm that the DBMS implements that makes a decision on which pages to evict from buffer pool when it needs space.
-Implementation goals of replacement policies are improved correctness, accuracy, speed, and meta-data overhead.
+When the DBMS needs to free up a frame to make room for a new page, it must decide which page to evict from the buffer pool. A replacement policy is an algorithm that the DBMS implements that makes a decision on which pages to evict from buffer pool when it needs space. Implementation goals of replacement policies are improved correctness, accuracy, speed, and meta-data overhead.
 
 ![49.jpg](assets/1678153367319-d6da88b3-a735-4cac-97b0-5cd1f3b93cce.jpeg)
 
-## Least Recently Used (LRU)
+### Least Recently Used (LRU)
 
 The Least Recently Used replacement policy maintains a timestamp of when each page was last accessed. The DBMS picks to evict the page with the oldest timestamp. This timestamp can be stored in a separate data structure, such as a queue, to allow for sorting and improve efficiency by reducing sort time on eviction.
 
 ![50.jpg](assets/1678153367993-ea1e1b02-6d91-445f-81f6-c6c80a8e79e5.jpeg)
 
-## CLOCK
+### CLOCK
 
-The CLOCK policy is an approximation of LRU without needing a separate timestamp per page. In the CLOCK policy, each page is given a **reference bit**. When a page is accessed, set to 1.
-To visualize this, organize the pages in a circular buffer with a “clock hand”. Upon sweeping check if a page’s bit is set to 1. If yes, set to zero, if no, then evict it. In this way, the clock hand remembers position between evictions.
+The CLOCK policy is an approximation of LRU without needing a separate timestamp per page. In the CLOCK policy, each page is given a **reference bit**. When a page is accessed, set to 1. To visualize this, organize the pages in a circular buffer with a “clock hand”. Upon sweeping check if a page’s bit is set to 1. If yes, set to zero, if no, then evict it. In this way, the clock hand remembers position between evictions.
 
 ![Figure 3: Visualization of CLOCK replacement policy. Page 1 is referenced and set to 1. When the clock hand sweeps, it sets the reference bit for page 1 to 0 and evicts page 5.](assets/image2.png)
 
@@ -220,12 +200,9 @@ To visualize this, organize the pages in a circular buffer with a “clock hand�
 
 ![65.jpg](assets/1678153374750-e1cfdc0d-352c-43c5-8396-6daa81d0b40a.jpeg)
 
-## Alternatives
+### Alternatives
 
-There are a number of problems with LRU and CLOCK replacement policies.
-Namely, LRU and CLOCK are susceptible to *sequential flooding*, where the buffer pool’s contents are corrupted due to a sequential scan. Since sequential scans read every page, the timestamps of pages read may not reflect which pages we actually want. In other words, the most recently used page is actually the most unneeded page.
-There are three solutions to address the shortcomings of LRU and CLOCK policies.
-One solution is **LRU-K **which tracks the history of the last K references as timestamps and computes the interval between subsequent accesses. This history is used to predict the next time a page is going to be accessed.
+There are a number of problems with LRU and CLOCK replacement policies. Namely, LRU and CLOCK are susceptible to _sequential flooding_, where the buffer pool’s contents are corrupted due to a sequential scan. Since sequential scans read every page, the timestamps of pages read may not reflect which pages we actually want. In other words, the most recently used page is actually the most unneeded page. There are three solutions to address the shortcomings of LRU and CLOCK policies. One solution is \*\*LRU-K \*\*which tracks the history of the last K references as timestamps and computes the interval between subsequent accesses. This history is used to predict the next time a page is going to be accessed.
 
 ![66.jpg](assets/1678153374904-d60efdd3-0a76-4670-80a2-f8489f78535d.jpeg)
 
@@ -239,10 +216,9 @@ Lastly, priority hints allow transactions to tell the buffer pool whether page i
 
 ![69.jpg](assets/1678153375609-802cfdfb-80d5-4e5a-86cc-e400e58414d2.jpeg)
 
-## Dirty Pages
+### Dirty Pages
 
-There are two methods to handling pages with dirty bits. The fastest option is to drop any page in the buffer pool that is not dirty. A slower method is to write back dirty pages to disk to ensure that its changes are persisted.
-These two methods illustrate the trade-off between fast evictions versus dirty writing pages that will not be read again in the future.
+There are two methods to handling pages with dirty bits. The fastest option is to drop any page in the buffer pool that is not dirty. A slower method is to write back dirty pages to disk to ensure that its changes are persisted. These two methods illustrate the trade-off between fast evictions versus dirty writing pages that will not be read again in the future.
 
 ![70.jpg](assets/1678153377123-995eee76-db12-4c9d-a031-89199343e936.jpeg)
 
@@ -250,15 +226,15 @@ One way to avoid the problem of having to write out pages unnecessarily is backg
 
 ![71.jpg](assets/1678153377211-404b5116-5d2f-4f80-96a7-9e6699791968.jpeg)
 
-# Other Memory Pools
+## Other Memory Pools
 
 The DBMS needs memory for things other than just tuples and indexes. These other memory pools may not always backed by disk depending on implementation.
 
-- Sorting + Join Buffers
-- Query Caches
-- Maintenance Buffers
-- Log Buffers
-- Dictionary Caches
+* Sorting + Join Buffers
+* Query Caches
+* Maintenance Buffers
+* Log Buffers
+* Dictionary Caches
 
 ![72.jpg](assets/1678153377213-e068ce30-83b5-4ff3-b23a-6f99fe9e68db.jpeg)
 
