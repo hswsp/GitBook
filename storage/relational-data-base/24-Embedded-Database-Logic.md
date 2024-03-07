@@ -4,7 +4,7 @@
 
 ![2.jpg](assets/2-20231123131906-09iv835.jpg)
 
-# Motivation
+## Motivation
 
 Until now, we have assumed that all of the logic for an application is located in the application itself. Most applications interact with the DBMS using a “conversational” API (e.g., JDBC, ODBC). This is where the application sends a query request to the DBMS and then waits for a response. After the DBMS sends a response, it then waits for the next request from the application for that connection.
 
@@ -28,9 +28,9 @@ The downside of these methods is that the syntax is often not portable across di
 
 ![10.jpg](assets/10-20231123131906-hs3vpzf.jpg)
 
-# User-Defined Functions
+## User-Defined Functions
 
-A *user defined function* is a function written by the application developer that extends the system’s functionality beyond its built-in operations. Each function takes in scalar input arguments, performs some computation, and then returns a result (scalar, table). A UDF can only be invoked as part of a SQL statement.
+A _user defined function_ is a function written by the application developer that extends the system’s functionality beyond its built-in operations. Each function takes in scalar input arguments, performs some computation, and then returns a result (scalar, table). A UDF can only be invoked as part of a SQL statement.
 
 ![11.jpg](assets/11-20231123131906-hpqd7au.jpg)
 
@@ -42,9 +42,9 @@ Return Types:
 
 Function Body:
 
-• **SQL Functions:**  A SQL-based UDF contains a list of SQL statements that the DBMS executes in order when the UDF is invoked. The UDF returns whatever the result of the last query is.
+• **SQL Functions:** A SQL-based UDF contains a list of SQL statements that the DBMS executes in order when the UDF is invoked. The UDF returns whatever the result of the last query is.
 
-• **Native Programming Language**: The developer can write a UDF in a language that is natively supported by the DBMS. Examples: *SQL/PSM* (SQL Standard), *PL/SQL* (Oracle, DB2), *PL/pgSQL* (Postgres), *Transact-SQL* (MSSQL/Sybase).
+• **Native Programming Language**: The developer can write a UDF in a language that is natively supported by the DBMS. Examples: _SQL/PSM_ (SQL Standard), _PL/SQL_ (Oracle, DB2), _PL/pgSQL_ (Postgres), _Transact-SQL_ (MSSQL/Sybase).
 
 • **External Programming Language**: UDFs written in more conventional programming languages (e.g., C, Java, JavaScript, Python) run a separate process (i.e., sandbox) to prevent them from crashing the DBMS process.
 
@@ -94,9 +94,9 @@ Complex UDFs executed iteratively without system optimizations can be very slow.
 
 ![26.jpg](assets/26-20231123131906-1zwrbqr.jpg)
 
-# Stored Procedures
+## Stored Procedures
 
-A *stored procedure* is a self-contained function that performs more complex logic inside of the DBMS. Unlike a UDF, a stored procedure can be invoked on its own without having to **be part of a SQL statement.**
+A _stored procedure_ is a self-contained function that performs more complex logic inside of the DBMS. Unlike a UDF, a stored procedure can be invoked on its own without having to **be part of a SQL statement.**
 
 UDFs are also usually meant to be read-only, while stored procedures are allowed to modify the DBMS.
 
@@ -110,9 +110,9 @@ UDFs are also usually meant to be read-only, while stored procedures are allowed
 
 ![31.jpg](assets/31-20231123131906-rak88eh.jpg)
 
-# Triggers
+## Triggers
 
-A *trigger* instructs the DBMS to invoke a UDF when some event occurs in the database. Some examples of trigger usage are constraint checking or auditing any time a tuple is modified in a table.
+A _trigger_ instructs the DBMS to invoke a UDF when some event occurs in the database. Some examples of trigger usage are constraint checking or auditing any time a tuple is modified in a table.
 
 Each trigger is defined with the following properties:
 
@@ -132,9 +132,9 @@ Each trigger is defined with the following properties:
 
 ![36.jpg](assets/36-20231123131906-2h3kcra.jpg)
 
-# Change Notifications
+## Change Notifications
 
-A *change notification* is like a trigger except that the DBMS sends a message to an external entity that something notable has happened in the database. They can be chained with a trigger to pass along whenever a change occurs. Notifications are asynchronous, meaning that they are only pushed to listening connection whenever they interact with the DBMS. Some ORMs will poll the DBMS with lightweight “`SELECT 1`” every so often to retrieve new notifications.
+A _change notification_ is like a trigger except that the DBMS sends a message to an external entity that something notable has happened in the database. They can be chained with a trigger to pass along whenever a change occurs. Notifications are asynchronous, meaning that they are only pushed to listening connection whenever they interact with the DBMS. Some ORMs will poll the DBMS with lightweight “`SELECT 1`” every so often to retrieve new notifications.
 
 Commands:
 
@@ -150,7 +150,7 @@ Commands:
 
 ![40.jpg](assets/40-20231123131906-rruky6j.jpg)
 
-# User-Defined Types
+## User-Defined Types
 
 Most DBMSs support the basic primitive types defined in the SQL standard (e.g., ints, floats, varchars). But sometimes that application wants to store complex types that are comprised of multiple primitive types. Or these complex types might have different behaviors for various arithmetic operators.
 
@@ -160,17 +160,17 @@ Another solution is to let the **application** **serialize** the complex type (e
 
 ![41.jpg](assets/41-20231123131906-h3ggdzl.jpg)
 
-A better approach is to use a *user-defined type* (UDT). This is a special data type that is defined by the application developer that the DBMS can be stored natively. Each DBMS exposes a different API that allows you to create a UDT. This allows you override basic operators and functions.
+A better approach is to use a _user-defined type_ (UDT). This is a special data type that is defined by the application developer that the DBMS can be stored natively. Each DBMS exposes a different API that allows you to create a UDT. This allows you override basic operators and functions.
 
 ![42.jpg](assets/42-20231123131906-2tf7iyj.jpg)
 
 ![43.jpg](assets/43-20231123131906-sixatls.jpg)
 
-# Views
+## Views
 
 A database views is “virtual” table that contains the output from a `SELECT` query. The view can then be accessed as if it was a real table. Under the hood, queries on views are converted into a single query using the original query that generated view. Views allow programmers to simplify a complex query that is executed often. It is often also used as a mechanism for hiding a subset of a table’s attributes from certain users. One can only update a view if it only contains a **single** based table, and that it does not contain aggregations, distinctions, union, or grouping.
 
-Unlike `SELECT...INTO`, a view does not allocate a table to store the result of the view. A *materialized* *view* maintains the result of a view internally that may be automatically updated when the underlying tables change.
+Unlike `SELECT...INTO`, a view does not allocate a table to store the result of the view. A _materialized_ _view_ maintains the result of a view internally that may be automatically updated when the underlying tables change.
 
 ![44.jpg](assets/44-20231123131906-s1wddvb.jpg)
 
