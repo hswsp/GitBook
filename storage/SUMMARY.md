@@ -11,7 +11,7 @@
 
 * [01 - Relational Model & Relational Algebra](relational-data-base/01-Relational-Model\&Relational-Algebra.md)
 * [02 - Modern SQL](relational-data-base/02-Modern-SQL.md)
-* [Database Storage 1](relational-data-base/03-Database-Storage-1.md)
+* [03 - Database Storage 1](relational-data-base/03-Database-Storage-1.md)
 * [Database Storage 2](relational-data-base/04-Database-Storage-2.md)
 * [Columnar Databases & Compression](relational-data-base/05-Columnar-Databases\&Compression.md)
 * [Memory Management + Buffer Cache.md](relational-data-base/06-Memory-Management+Buffer-Cache.md)
