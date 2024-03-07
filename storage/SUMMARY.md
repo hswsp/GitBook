@@ -32,7 +32,7 @@
 * [21 - Introduction to Distributed Databases](relational-data-base/21-Introduction-to-Distributed-Databases.md)
 * [22 - Distributed Transactional Database Systems](relational-data-base/22-Distributed-Transactional-Database-Systems.md)
 * [23 - Distributed Analytical Database Systems](relational-data-base/23-Distributed-Analytical-Database-Systems.md)
-* [24 - Embedded Database Logic](relational-data-base/embedded-database-logic.md)
+* [24 - Embedded Database Logic](relational-data-base/24-Embedded-Database-Logic.md)
 * [26 - Live Call-in Q&A Lecture](relational-data-base/26-Live-Call-in-Q\&A-Lecture.md)
 * [CMU15-445笔记-存储篇](relational-data-base/CMU15-445笔记-存储篇.md)
 * [CMU15-445笔记-索引篇](relational-data-base/CMU15-445笔记-索引篇.md)
