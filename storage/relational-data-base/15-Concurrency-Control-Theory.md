@@ -1,8 +1,8 @@
 # 15 - Concurrency Control Theory
 
-![1.jpg](https://github.com/hswsp/IMAGE_HOST/raw/main/assets/20240307102644.jpg)
+![1.jpg](assets/1-20231123131905-n91ttus.jpg)
 
-![2.jpg](https://github.com/hswsp/IMAGE_HOST/raw/main/assets/20240307102655.jpg)
+![2.jpg](assets/2-20231123131905-9d5k9kn.jpg)
 
 # Motivation
 
