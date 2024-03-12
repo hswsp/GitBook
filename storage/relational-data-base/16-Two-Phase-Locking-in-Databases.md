@@ -1,5 +1,7 @@
 # 16 - Two-Phase Locking in Databases
 
+## 16 - Two-Phase Locking in Databases
+
 ![1.jpg](assets/1-20231123131905-gzbwthg.jpg)
 
 ![2.jpg](assets/2-20231123131905-02451l3.jpg)
@@ -10,9 +12,9 @@
 
 ![5.jpg](assets/5-20231123131905-et6nvfg.jpg)
 
-# Transaction Locks
+## Transaction Locks
 
-A DBMS uses *locks* to dynamically generate an execution schedule for transactions that is serializable without knowing each transaction’s read/write set ahead of time. These locks protect database objects during concurrent access when there are multiple readers and writes. The DBMS contains a centralized *lock manager* that decides whether a transaction can acquire a lock or not. It also provides a global view of whats going on inside the system.
+A DBMS uses _locks_ to dynamically generate an execution schedule for transactions that is serializable without knowing each transaction’s read/write set ahead of time. These locks protect database objects during concurrent access when there are multiple readers and writes. The DBMS contains a centralized _lock manager_ that decides whether a transaction can acquire a lock or not. It also provides a global view of whats going on inside the system.
 
 ![6.jpg](assets/6-20231123131905-yigcl24.jpg)
 
@@ -20,8 +22,8 @@ A DBMS uses *locks* to dynamically generate an execution schedule for transactio
 
 There are two basic types of locks:
 
-- **Shared Lock (S-LOCK):**  A shared lock that allows multiple transactions to read the same object at the same time. If one transaction holds a shared lock, then another transaction can also acquire that same shared lock.
-- **Exclusive Lock (X-LOCK)** : An exclusive lock allows a transaction to modify an object. This lock prevents other transactions from taking any other lock (`S-LOCK` or `X-LOCK`) on the object. Only one transaction can hold an exclusive lock at a time.
+* **Shared Lock (S-LOCK):** A shared lock that allows multiple transactions to read the same object at the same time. If one transaction holds a shared lock, then another transaction can also acquire that same shared lock.
+* **Exclusive Lock (X-LOCK)** : An exclusive lock allows a transaction to modify an object. This lock prevents other transactions from taking any other lock (`S-LOCK` or `X-LOCK`) on the object. Only one transaction can hold an exclusive lock at a time.
 
 Transactions must request locks (or upgrades) from the lock manager. The lock manager grants or blocks requests based on what locks are currently held by other transactions. Transactions must release locks when they no longer need them to free up the object. The lock manager updates its internal lock-table with information about which transactions hold which locks and which transactions are waiting to acquire locks.
 
@@ -39,7 +41,7 @@ Just the usage of locks does not automatically resolve all the issues associated
 
 ![12.jpg](assets/12-20231123131905-z5l8cif.jpg)
 
-# Two-Phase Locking
+## Two-Phase Locking
 
 Two-Phase locking (2PL) is a pessimistic concurrency control protocol that uses locks to determine whether **a transaction** is allowed to access an object in the database on the ﬂy. The protocol does not need to know all of the queries that a transaction will execute ahead of time.
 
@@ -49,7 +51,7 @@ Two-Phase locking (2PL) is a pessimistic concurrency control protocol that uses 
 
 ![13.jpg](assets/13-20231123131905-8p8f0e7.jpg)
 
-On its own, 2PL is sufﬁcient to guarantee **conﬂict serializability**. It generates schedules whose precedence graph is acyclic. But it is susceptible to *cascading aborts*, which is when a transaction aborts and now another transaction must be rolled back, which results in wasted work.
+On its own, 2PL is sufﬁcient to guarantee **conﬂict serializability**. It generates schedules whose precedence graph is acyclic. But it is susceptible to _cascading aborts_, which is when a transaction aborts and now another transaction must be rolled back, which results in wasted work.
 
 ![14.jpg](assets/14-20231123131905-ibaajvi.jpg)
 
@@ -69,11 +71,11 @@ On its own, 2PL is sufﬁcient to guarantee **conﬂict serializability**. It ge
 
 ![21.jpg](assets/21-20231123131905-x7tz1s9.jpg)
 
-## Strong Strict Two-Phase Locking
+### Strong Strict Two-Phase Locking
 
-A schedule is *strict* if any value written by a transaction is never read or overwritten by another transaction until the ﬁrst transaction commits. *Strong Strict 2PL* (also known as ***Rigorous***​ ** 2PL**) is a variant of 2PL where the transactions only release locks when they commit.
+A schedule is _strict_ if any value written by a transaction is never read or overwritten by another transaction until the ﬁrst transaction commits. _Strong Strict 2PL_ (also known as _**Rigorous**_​ \*\* 2PL\*\*) is a variant of 2PL where the transactions only release locks when they commit.
 
-The advantage of this approach is that the DBMS does not incur *cascading aborts*. The DBMS can also reverse the changes of an aborted transaction by restoring the original values of modiﬁed tuples. However, Strict 2PL generates more cautious/pessimistic schedules that **limit concurrency.**
+The advantage of this approach is that the DBMS does not incur _cascading aborts_. The DBMS can also reverse the changes of an aborted transaction by restoring the original values of modiﬁed tuples. However, Strict 2PL generates more cautious/pessimistic schedules that **limit concurrency.**
 
 ![22.jpg](assets/22-20231123131905-qkjexvk.jpg)
 
@@ -87,7 +89,7 @@ The advantage of this approach is that the DBMS does not incur *cascading aborts
 
 ![27.jpg](assets/27-20231123131906-pvtc8v5.jpg)
 
-## Universe of Schedules
+### Universe of Schedules
 
 $SerialSchedules ⊂ StrongStrict2PL ⊂ ConflictSerializableSchedules ⊂ V iewSerializableSchedules ⊂ AllSchedules$
 
@@ -95,17 +97,17 @@ $SerialSchedules ⊂ StrongStrict2PL ⊂ ConflictSerializableSchedules ⊂ V iew
 
 ![29.jpg](assets/29-20231123131906-gj8hgpb.jpg)
 
-# Deadlock Handling
+## Deadlock Handling
 
-A *deadlock* is a cycle of transactions waiting for locks to be released by each other. There are two approaches to handling deadlocks in 2PL: **detection and prevention**.
+A _deadlock_ is a cycle of transactions waiting for locks to be released by each other. There are two approaches to handling deadlocks in 2PL: **detection and prevention**.
 
 ![30.jpg](assets/30-20231123131906-bambwoh.jpg)
 
 ![31.jpg](assets/31-20231123131906-t5yup46.jpg)
 
-## Approach #1:# Deadlock Detection
+### Approach #1:# Deadlock Detection
 
-To detect deadlocks, the DBMS creates a *waits-for* graph where transactions are nodes, and there exists a directed edge from $T_i$ to $T_j$ if transaction $T_i$ is waiting for transaction $T_j$ to release a lock. The system will periodically check for cycles in the waits-for graph (usually with a background thread) and then make a decision on how to break it. **Latches are not needed** when constructing the graph since if the DBMS misses a deadlock in one pass, it will ﬁnd it in the subsequent passes. Note that there is a tradeoff between the frequency of deadlock checks (uses cpu cycles) and the wait time till a deadlock is broken.
+To detect deadlocks, the DBMS creates a _waits-for_ graph where transactions are nodes, and there exists a directed edge from $T\_i$ to $T\_j$ if transaction $T\_i$ is waiting for transaction $T\_j$ to release a lock. The system will periodically check for cycles in the waits-for graph (usually with a background thread) and then make a decision on how to break it. **Latches are not needed** when constructing the graph since if the DBMS misses a deadlock in one pass, it will ﬁnd it in the subsequent passes. Note that there is a tradeoff between the frequency of deadlock checks (uses cpu cycles) and the wait time till a deadlock is broken.
 
 When the DBMS detects a deadlock, it will **select a “victim” transaction to abort to break the cycle**. The victim transaction will either restart or abort depending on how the application invoked it.
 
@@ -125,7 +127,7 @@ The DBMS can consider multiple transaction properties when selecting a victim to
 2. By progress (least/most queries executed).
 3. By the ## of items already locked.
 4. By the ## of transactions needed to rollback with it.
-5. # of times a transaction has been restarted in the past (to avoid starvation).
+5. ## of times a transaction has been restarted in the past (to avoid starvation).
 
 There is no one choice that is better than others. Many systems use a combination of these factors.
 
@@ -135,7 +137,7 @@ After selecting a victim transaction to abort, the DBMS can also decide on how f
 
 ![38.jpg](assets/38-20231123131906-na06jcp.jpg)
 
-## Approach #2:# Deadlock Prevention
+### Approach #2:# Deadlock Prevention
 
 Instead of letting transactions try to acquire any lock they need and then deal with deadlocks afterwards, deadlock prevention 2PL stops transactions from causing deadlocks before they occur. When a transaction tries to acquire a lock held by another transaction (which could cause a deadlock), the DBMS kills one of them. To implement this, transactions are assigned priorities based on timestamps (older transactions have higher priority). These schemes guarantee no deadlocks because **only one type of direction is allowed** when waiting for a lock. When a transaction restarts, the DBMS **reuses** the same timestamp.
 
@@ -143,8 +145,8 @@ Instead of letting transactions try to acquire any lock they need and then deal 
 
 There are two ways to kill transactions under deadlock prevention:
 
-- **Wait-Die (“Old Waits for Young”)** : If the requesting transaction has a higher priority than the holding transaction, it waits. Otherwise, it aborts.
-- **Wound-Wait (“Young Waits for Old”)** : If the requesting transaction has a higher priority than the holding transaction, the holding transaction aborts and releases the lock. Otherwise, the requesting transaction waits.
+* **Wait-Die (“Old Waits for Young”)** : If the requesting transaction has a higher priority than the holding transaction, it waits. Otherwise, it aborts.
+* **Wound-Wait (“Young Waits for Old”)** : If the requesting transaction has a higher priority than the holding transaction, the holding transaction aborts and releases the lock. Otherwise, the requesting transaction waits.
 
 ![40.jpg](assets/40-20231123131906-zqsm9c3.jpg)
 
@@ -152,7 +154,7 @@ There are two ways to kill transactions under deadlock prevention:
 
 ![42.jpg](assets/42-20231123131906-vb56az5.jpg)
 
-# Lock Granularities
+## Lock Granularities
 
 If a transaction wants to update one billion tuples, it has to ask the DBMS’s lock manager for a billion locks. This will be slow because the transaction has to take latches in the lock manager’s internal lock table data structure as it acquires/releases locks.
 
@@ -162,7 +164,7 @@ To avoid this overhead, the DBMS can use to use a lock hierarchy that allows a t
 
 ![44.jpg](assets/44-20231123131906-jiq1u6j.jpg)
 
-## Database Lock Hierarchy:
+### Database Lock Hierarchy:
 
 1. Database level (Slightly Rare)
 2. Table level (Very Common)
@@ -180,9 +182,9 @@ To avoid this overhead, the DBMS can use to use a lock hierarchy that allows a t
 
 ![48.jpg](assets/48-20231123131906-p0nwrk2.jpg)
 
-- **Intention-Shared (IS)** : Indicates explicit locking at a lower level with shared locks.
-- **Intention-Exclusive (IX)** : Indicates explicit locking at a lower level with exclusive or shared locks.
-- **Shared+Intention-Exclusive (SIX)** : The sub-tree rooted at that node is locked explicitly in **shared** mode and explicit locking is being done at a lower level with exclusive-mode locks.
+* **Intention-Shared (IS)** : Indicates explicit locking at a lower level with shared locks.
+* **Intention-Exclusive (IX)** : Indicates explicit locking at a lower level with exclusive or shared locks.
+* **Shared+Intention-Exclusive (SIX)** : The sub-tree rooted at that node is locked explicitly in **shared** mode and explicit locking is being done at a lower level with exclusive-mode locks.
 
 ![49.jpg](assets/49-20231123131906-6en733w.jpg)
 
